@@ -17,7 +17,9 @@ app.use(cookieParser());
 
 
 
-
+app.get("/", (_req, res) => {
+  res.status(200).send("Backend is running 🚀");
+});
 
 
 

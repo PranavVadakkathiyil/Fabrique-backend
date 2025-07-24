@@ -13,8 +13,10 @@ ConnectSocket(server)
 DBConnect()
 
 .then(()=>{
+
     server.listen(PORT,()=>{
         console.log(`Server connected on    -:- http://localhost:${PORT}`);
+         
         
     })
 })
