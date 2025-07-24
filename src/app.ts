@@ -7,7 +7,7 @@ import passport from "passport";
 const app:Application = express()
 
 app.use(cors({
-  origin: "*",
+  origin: ['https://fabrique-frontend.vercel.app','http://localhost:3000'],
   credentials: true,
 }));
 app.use(express.json({limit:"16kb"}))
@@ -93,7 +93,7 @@ app.get(
       
         
       
-      .redirect('http://localhost:5173');
+      .redirect('https://fabrique-frontend.vercel.app');
       
       
   }

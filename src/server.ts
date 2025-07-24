@@ -4,10 +4,12 @@ import {ConnectSocket} from './config/Socket'
 import dotenv from 'dotenv'
 import app from "./app";
 dotenv.config()
-const PORT = process.env.PORT!
+const PORT = process.env.PORT|| 3000
 const server = createServer(app)
 ConnectSocket(server)
-
+ app.get("/", (_req, res) => {
+  res.status(200).send("Backend is running 🚀");
+})
 
 
 DBConnect()
@@ -19,6 +21,7 @@ DBConnect()
          
         
     })
+   ;
 })
 .catch((error)=>{
     console.log("Server Connection error",error);
