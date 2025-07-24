@@ -7,7 +7,7 @@ import passport from "passport";
 const app:Application = express()
 
 app.use(cors({
-  origin: ['https://fabrique-frontend.vercel.app','http://localhost:3000'],
+  origin: ['https://fabrique-frontend.vercel.app'],
   credentials: true,
 }));
 app.use(express.json({limit:"16kb"}))

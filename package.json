@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/server.js",
-    "bulid": "tsc -p .",
+    "build": "tsc -p .",
     "dev": "tsc-watch --onSuccess \"node dist/server.js\""
   },
   "keywords": [],

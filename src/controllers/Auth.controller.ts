@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { CookieOptions, Request, Response } from "express";
 import User from "../models/User.model";
 import { uploadToCloudinary } from "../config/cloudinary";
 import { UploadApiResponse } from "cloudinary";
@@ -93,13 +93,14 @@ const loginUser = async (req: Request, res: Response): Promise<void> => {
     const option = {
       httpOnly: true,
       secure: true,
+      sameSite: "none",
     };
     const { accesstoken, refreshtoken } = await AccessandRefreshToken(user._id);
 
     res
       .status(201)
-      .cookie("accesstoken", accesstoken, option)
-      .cookie("refresh", refreshtoken, option)
+      .cookie("accesstoken", accesstoken, option as CookieOptions)
+      .cookie("refresh", refreshtoken, option as CookieOptions)
       .json({
         success: true,
 
@@ -126,11 +127,12 @@ const LogOut = async (req: AuhtRequest, res: Response) => {
     const option = {
       httpOnly: true,
       secure: true,
+      sameSite: "none",
     };
     res
       .status(201)
-      .clearCookie("accesstoken", option)
-      .clearCookie("refreshtoken", option)
+      .clearCookie("accesstoken", option as CookieOptions)
+      .clearCookie("refreshtoken", option as CookieOptions)
       .json({
         success: true,
         message: "Logout success",
@@ -162,11 +164,11 @@ const getAllUsers = async (req: AuhtRequest, res: Response) => {
   const { search } = req.query;
   const SearchResult = search
     ? {
-        $or: [
-          { name: { $regex: search, $options: "i" } },
-          { email: { $regex: search, $options: "i" } },
-        ],
-      }
+      $or: [
+        { name: { $regex: search, $options: "i" } },
+        { email: { $regex: search, $options: "i" } },
+      ],
+    }
     : {};
   const users = await User.find(SearchResult).find({
     _id: { $ne: req.user_info._id },
@@ -270,22 +272,22 @@ const getCurrentUserInfo = async (req: AuhtRequest, res: Response) => {
 const changeRole = async (req: AuhtRequest, res: Response) => {
   try {
     const userId = req.user_info?._id;
-    const {id,role} = req.body;
-    if (!id||!role) {
+    const { id, role } = req.body;
+    if (!id || !role) {
       res.status(401).json({ success: false, message: "User And role needed" });
       return;
     }
 
     const user = await User.findById(id).select("-password")
-    if(!user){
+    if (!user) {
       res.status(401).json({ success: false, message: "User no founded" });
       return;
-    }    
+    }
     user.role = role
     user.save()
 
-    
- 
+
+
     res.status(200).json({
       success: true,
       user
